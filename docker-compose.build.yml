@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  prestamype-tcd-api-build:
+    container_name: prestamype-tcd-api-build
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    environment:
+      - NODE_ENV=production

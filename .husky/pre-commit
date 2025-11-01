@@ -1,0 +1,6 @@
+# npm test
+echo "🧹 Running lint-staged..."
+yarn lint-staged
+
+echo "🧩 Validating Prisma schema..."
+npx prisma validate
