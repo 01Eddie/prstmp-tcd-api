@@ -17,8 +17,38 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  email    String @unique
-  password String
-  createdAt DateTime @default(now())
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  email       String @unique
+  password    String
+  createdAt   DateTime @default(now())
+  exchanges   ExchangeRequest[]
+}
+
+model ExchangeRequest {
+  id                String         @id @default(auto()) @map("_id") @db.ObjectId
+  tipo_de_cambio    TipoDeCambio         // "compra" | "venta"
+  monto_enviar      Float
+  monto_recibir     Float
+  createdAt         DateTime       @default(now())
+  tasa_de_cambio    Json
+  id_usuario        String @db.ObjectId
+  usuario           User   @relation(fields: [id_usuario], references: [id])
+  estadoSolicitud   statusExchange   @default(pendiente)
+}
+
+// type TasaDeCambio {
+//   _id            String
+//   purchase_price Decimal @db.Decimal(10, 4)
+//   sale_price     Decimal @db.Decimal(10, 4)
+// }
+
+enum TipoDeCambio {
+  compra
+  venta
+}
+
+enum statusExchange {
+  pendiente
+  aceptado
+  cancelado
 }

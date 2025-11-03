@@ -1,39 +1,26 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
-import { LoginUseCase } from 'src/application/auth/use-cases/login.use-case';
-import { RegisterUseCase } from 'src/application/auth/use-cases/register.use-case';
-import { UserPrismaRepository } from 'src/infraestructure/database/user.prisma.repository';
-import { JwtService } from 'src/infraestructure/security/jwt/jwt.service';
-import { PrismaService } from 'src/infraestructure/security/prisma/prisma.service';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { LoginDto } from '../../../application/auth/dto/login.dto';
+import { RegisterDto } from '../../../application/auth/dto/register.dto';
+import { AuthService } from 'src/application/auth/auth.service';
+import { JwtAuthGuard } from 'src/infraestructure/security/jwt/jwt.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly userRepo: UserPrismaRepository,
-    private readonly jwtService: JwtService,
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() body: { email: string; password: string }) {
-    try {
-      const useCase = new LoginUseCase(this.userRepo, this.jwtService);
-      const result = await useCase.login(body.email, body.password);
-      return result;
-    } catch (err: unknown) {
-      if (err instanceof Error) throw new BadRequestException(err.message);
-      throw new BadRequestException('Se produjo un error desconocido.');
-    }
+  async login(@Body() body: LoginDto) {
+    return this.authService.login(body.email, body.password);
   }
 
   @Post('register')
-  async register(@Body() body: { email: string; password: string }) {
-    try {
-      const useCase = new RegisterUseCase(this.userRepo, this.prisma);
+  async register(@Body() body: RegisterDto) {
+    return this.authService.register(body.email, body.password);
+  }
 
-      return await useCase.register(body.email, body.password);
-    } catch (err: unknown) {
-      if (err instanceof Error) throw new BadRequestException(err.message);
-      throw new BadRequestException('Se produjo un error desconocido.');
-    }
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile() {
+    return { message: 'This is a protected profile route' };
   }
 }

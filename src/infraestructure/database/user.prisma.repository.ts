@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/domain/user.entity';
+import { Prisma } from '@prisma/client/default.js';
+import { User } from 'src/domain/dto/user.entity.dto';
 import { IUserRepository } from 'src/domain/user.repository';
 import { PrismaService } from '../security/prisma/prisma.service';
-import { Prisma } from '@prisma/client/default.js';
 
 @Injectable()
 export class UserPrismaRepository implements IUserRepository {
@@ -12,7 +12,15 @@ export class UserPrismaRepository implements IUserRepository {
     const user = await this.prisma.user.findUnique({
       where: { email },
     });
-    return user ? new User(user.id, user.email, user.password) : null;
+
+    if (!user) {
+      return null;
+    }
+    return {
+      id: user.id,
+      email: user.email,
+      password: user.password,
+    };
   }
 
   async create(user: User): Promise<User> {
@@ -24,7 +32,11 @@ export class UserPrismaRepository implements IUserRepository {
         },
       });
 
-      return new User(createdUser.id, createdUser.email, createdUser.password);
+      return {
+        id: createdUser.id,
+        email: createdUser.email,
+        password: createdUser.password,
+      };
     } catch (error: unknown) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -35,5 +47,20 @@ export class UserPrismaRepository implements IUserRepository {
 
       throw error;
     }
+  }
+
+  async findById(id: string): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      return null;
+    }
+    return {
+      id: user.id,
+      email: user.email,
+      password: user.password,
+    };
   }
 }
