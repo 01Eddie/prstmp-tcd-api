@@ -3,8 +3,8 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { User } from 'src/domain/dto/user.entity.dto';
-import { ExchangePrismaRepository } from 'src/infraestructure/database/exchange.prisma.repository';
+import { User } from '../../domain/dto/user.entity.dto';
+import { ExchangePrismaRepository } from '../../infraestructure/database/exchange.prisma.repository';
 import { GetExchangeResponseDto } from './dto/getExchangeResponse.dto';
 import { CalculateAmountResponseDto } from './dto/calculateAmountResponse.dto';
 import { GetExchangeHistoryResponseDto } from './dto/getExchangeHistoryResponse.dto';

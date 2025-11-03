@@ -7,10 +7,10 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ExchangeService } from 'src/application/exchange/exchange.service';
-import { GetUser } from 'src/common/decorators/get-user.decorator';
-import { User } from 'src/domain/dto/user.entity.dto';
-import { JwtAuthGuard } from 'src/infraestructure/security/jwt/jwt.guard';
+import { ExchangeService } from '../../../application/exchange/exchange.service';
+import { GetUser } from '../../../common/decorators/get-user.decorator';
+import { User } from '../../../domain/dto/user.entity.dto';
+import { JwtAuthGuard } from '../../../infraestructure/security/jwt/jwt.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('exchange')

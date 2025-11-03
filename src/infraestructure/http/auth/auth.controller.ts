@@ -1,8 +1,7 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { LoginDto } from '../../../application/auth/dto/login.dto';
 import { RegisterDto } from '../../../application/auth/dto/register.dto';
-import { AuthService } from 'src/application/auth/auth.service';
-import { JwtAuthGuard } from 'src/infraestructure/security/jwt/jwt.guard';
+import { AuthService } from '../../../application/auth/auth.service';
 
 @Controller('auth')
 export class AuthController {
@@ -16,11 +15,5 @@ export class AuthController {
   @Post('register')
   async register(@Body() body: RegisterDto) {
     return this.authService.register(body.email, body.password);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile() {
-    return { message: 'This is a protected profile route' };
   }
 }

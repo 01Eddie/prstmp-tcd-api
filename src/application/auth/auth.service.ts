@@ -5,12 +5,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import bcrypt from 'bcrypt';
-import { JwtService } from 'src/infraestructure/security/jwt/jwt.service';
-import { PrismaService } from 'src/infraestructure/security/prisma/prisma.service';
+import { JwtService } from '../../infraestructure/security/jwt/jwt.service';
+import { PrismaService } from '../../infraestructure/security/prisma/prisma.service';
 import { LoginResponseDto } from './dto/loginResponse.dto';
 import { RegisterResponseDto } from './dto/registerResponse.dto';
 import { MailerService } from '../mailer/mailer.service';
-import { UserPrismaRepository } from 'src/infraestructure/database/user.prisma.repository';
+import { UserPrismaRepository } from '../../infraestructure/database/user.prisma.repository';
 
 @Injectable()
 export class AuthService {
@@ -70,9 +70,7 @@ export class AuthService {
       };
     } catch (error) {
       console.error('Error en register:', error);
-
       if (error instanceof BadRequestException) throw error;
-
       throw new InternalServerErrorException('Error interno del servidor');
     }
   }
