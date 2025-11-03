@@ -15,7 +15,7 @@ API REST para el **Sistema para una casa de cambio digital**, desarrollada con:
 
 - [Node.js **v24.1.0**](https://nodejs.org/en/download/current)  
 - [npm](https://www.npmjs.com/) o [yarn](https://yarnpkg.com/)  
-- **PostgreSQL** instalado y corriendo  
+- **Mongo DB** corriendo  
 
 ---
 
@@ -26,8 +26,12 @@ API REST para el **Sistema para una casa de cambio digital**, desarrollada con:
    git clone https://github.com/01Eddie/prstmp-tcd-api
    cd prstmp-tcd-api
     ```
+2. Inicializar Husky
+    ```bash
+    npx husky install
+    ```
 
-2.	Crear un archivo **.env** en la raíz del proyecto con las siguientes variables globales:
+3.	Crear un archivo **.env** en la raíz del proyecto con las siguientes variables globales:
     ```bash
     # 🗄️ Base de datos
     DATABASE_URL="mongodb+srv://{{usuario}}:{{password}}@localhost:{{PORT}}/prestamype?retryWrites=true&w=majority&appName=Cluster0"
@@ -49,12 +53,12 @@ API REST para el **Sistema para una casa de cambio digital**, desarrollada con:
     # ␐ Url externo
     URL_CAMBIO_SEGURO={URL_EXTERNO}
 
-3.	Instalar dependencias usando docker:
+4.	Instalar dependencias usando docker:
     ```bash
     docker-compose -f docker-compose.dev.yml up --build
     ```
 
-4.  Alternativamente puede usar el comando configurado:
+5.  Alternativamente puede usar el comando configurado:
     ```bash
     npm run docker:dev
     ```
