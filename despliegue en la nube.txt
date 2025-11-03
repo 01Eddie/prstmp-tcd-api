@@ -1,0 +1,28 @@
+Despliegue en la nube:
+1. Preparamos el build haciendo 
+
+- npm run build || npm run docker:build
+
+2. Tener listo el .env de produccion
+3. Levantar el servicio 
+
+- npm run start || npm run docker:prod || node dist/main.js
+
+4. usando AWS EC2
+1. Clono el proyecto 
+2. Instalo docker y Node js
+3. Configuro los .env para dejarlos listos en los ambientes (prod, test)
+4. Instalo Nginx como proxi reverso para configurar el dominio donde ira alojado el proyecto
+
+/etc/nginx/sites-available/api.conf
+
+5. Luego habilito el sitio y reiniciando Nginx usando los comandos
+- sudo ln -s /etc/nginx/sites-available/api.conf /etc/nginx/sites-enabled/
+- sudo systemctl restart nginx
+
+6. Uso el Let's Encrypt para SSL:
+- sudo certbot --nginx -d api.{{NAME_SERVICE}}.com
+
+7. Automatizo el Pipeline usando Github Actions
+7.1 Configuro el workflows
+7.2 Hago las configuraciones de los jobs para automatizar los deploys.
