@@ -1,5 +1,5 @@
 # Install dependencies if needed
-FROM node:24-alpine as dev
+FROM node:24-alpine AS dev
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN npx yarn install --frozen-lockfile
@@ -9,7 +9,7 @@ ENTRYPOINT ["npx", "yarn"]
 CMD ["start:dev"]
 
 # Build production dist
-FROM node:24-alpine as builder
+FROM node:24-alpine AS builder
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=dev /app/node_modules ./node_modules
@@ -21,7 +21,7 @@ RUN rm -rf node_modules
 RUN npx yarn install --frozen-lockfile --production
 
 # Run production version only with necessary files
-FROM node:24-alpine as production
+FROM node:24-alpine AS production
 WORKDIR /app
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nestjs \
